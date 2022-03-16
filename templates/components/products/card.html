@@ -104,7 +104,7 @@
               {{#each custom_fields}}
     {{#if this.name '===' 'chargebee_plan_id'}}
         {{assignVar "chargebeePlanId" this.value}}
-        <a href="javascript:void(0)" data-cb-type="checkout" data-cb-plan-id="{{this.value}}"  class="button button--small card-figcaption-button">Subscribe</a>
+        <a href="javascript:void(0)" data-cb-type="checkout" data-cb-item-0="{{this.value}}"  class="button button--small card-figcaption-button">Subscribe</a>
     {{else}}
         {{#if add_to_cart_url}}
         <a href="{{add_to_cart_url}}" data-event-type="product-click" data-button-type="add-cart"
