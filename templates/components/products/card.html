@@ -100,10 +100,26 @@
                         {{#if pre_order}}
                             <a href="{{pre_order_add_to_cart_url}}" data-event-type="product-click" class="button button--small card-figcaption-button">{{lang 'products.pre_order'}}</a>
                         {{/if}}
-                        {{#if add_to_cart_url }}
-                            <a href="{{add_to_cart_url}}" data-event-type="product-click" data-button-type="add-cart" class="button button--small card-figcaption-button">{{lang 'products.add_to_cart'}}</a>
-                            <span class="product-status-message aria-description--hidden">{{lang 'category.add_cart_announcement'}}</span>
-                        {{/if}}
+                        
+              {{#each custom_fields}}
+    {{#if this.name '===' 'chargebee_plan_id'}}
+        {{assignVar "chargebeePlanId" this.value}}
+        <a href="javascript:void(0)" data-cb-type="checkout" data-cb-plan-id="{{this.value}}"  class="button button--small card-figcaption-button">Subscribe</a>
+    {{else}}
+        {{#if add_to_cart_url}}
+        <a href="{{add_to_cart_url}}" data-event-type="product-click" data-button-type="add-cart"
+            class="button button--small card-figcaption-button">{{lang 'products.add_to_cart'}}</a>
+        <span class="product-status-message aria-description--hidden">{{lang 'category.add_cart_announcement'}}</span>
+        {{/if}}
+    {{/if}}
+{{/each}}
+{{#unless custom_fields}}
+    {{#if add_to_cart_url}}
+        <a href="{{add_to_cart_url}}" data-event-type="product-click" data-button-type="add-cart" class="button button--small card-figcaption-button">{{lang 'products.add_to_cart'}}</a>
+        <span class="product-status-message aria-description--hidden">{{lang 'category.add_cart_announcement'}}</span>
+    {{/if}}
+{{/unless}}
+                        
                         {{#if out_of_stock_message }}
                             <a href="{{url}}" data-event-type="product-click" class="button button--small card-figcaption-button" data-product-id="{{id}}">{{out_of_stock_message}}</a>
                         {{/if}}
