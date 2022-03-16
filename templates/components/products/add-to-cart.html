@@ -54,3 +54,40 @@
         </div>
     {{/or}}
 </div>
+
+{{inject 'product' product}}
+
+<script>
+    var bcJsContext = JSON.parse({{ jsContext }});
+</script>
+<script>
+
+    function cbCheckoutInit(event){
+        let cbInstance = Chargebee.getInstance();
+        let cart = cbInstance.getCart();
+        let [planIdCustomField] = bcJsContext.product.custom_fields.filter(field => field.name === "chargebee_plan_id")
+        if(planIdCustomField){
+            document.getElementById("form-action-addToCart").value = 'Subscribe';
+        }
+        document.getElementById("form-action-addToCart").addEventListener("click", function (event) {
+            if (planIdCustomField) {
+                event.preventDefault();
+                let productQty = document.querySelector('.form-input--incrementTotal').value
+                let product = cbInstance.initializeProduct(planIdCustomField.value);
+                product.setPlanQuantity(productQty)
+                cart.replaceProduct(product);
+                cart.proceedToCheckout();
+            }
+        });
+    }
+    
+    let cbInitCheckerIntervalId;
+    cbInitCheckerIntervalId = setInterval(() => {
+        if(Chargebee && Chargebee.inited){
+            clearInterval(cbInitCheckerIntervalId);
+            cbCheckoutInit()
+        }
+    });
+
+  
+</script>
